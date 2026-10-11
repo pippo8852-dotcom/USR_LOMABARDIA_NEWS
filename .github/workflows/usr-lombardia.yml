@@ -1,0 +1,41 @@
+name: USR Lombardia
+
+on:
+  schedule:
+    - cron: '0 5-17 * * 1-5'   # ogni ora, 7-19 ora italiana (ora legale), da lunedì a venerdì
+  workflow_dispatch:
+
+concurrency:
+  group: usr-lombardia
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  check-usr:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run script
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }}
+          # USR_URL: https://www.mim.gov.it/web/usr-lombardia/comunicazioni   # solo se serve usare un'altra pagina
+        run: python notify_usr.py
+
+      - name: Commit and push changes if any
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add stato_usr.json
+          git diff --cached --quiet || (git commit -m "Aggiorna stato USR Lombardia" && git pull --rebase -q && git push)
