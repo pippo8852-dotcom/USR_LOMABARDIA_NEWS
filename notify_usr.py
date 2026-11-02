@@ -1,4 +1,4 @@
-"""Avvisi Telegram: solo comunicazioni USR Lombardia (MIM), lette tramite ScraperAPI
+"""Avvisi Telegram: solo comunicazioni USR Lombardia (MIM) , lette tramite ScraperAPI
    per aggirare il blocco (403) che il sito applica ai server di GitHub Actions."""
 import html
 import json
