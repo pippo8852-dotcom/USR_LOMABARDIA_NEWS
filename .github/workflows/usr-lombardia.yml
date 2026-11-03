@@ -2,7 +2,7 @@ name: USR Lombardia
 
 on:
   schedule:
-   - cron: '59 5-21 * * 1-5'   # ogni ora, 6:31-00:00 ora italiana (ora non legale), lunedì-venerdì
+   - cron: '5 5-21 * * 1-5'   # ogni ora, 6:31-00:00 ora italiana (ora non legale), lunedì-venerdì
   workflow_dispatch:
 
 concurrency:
